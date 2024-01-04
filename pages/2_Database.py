@@ -11,17 +11,17 @@ st.set_page_config(page_title='Data View',
                    initial_sidebar_state="collapsed"
                    )
 
-# #Upload CSV File
-# @st.cache_data
-# def load_data(file):
-#     df_data = pd.read_csv(file)
-#     return df_data
-# df_data = st.file_uploader('')
-# if df_data is None:
-#     st.stop()
-# df_data = load_data(df_data)
+#Upload CSV File
+@st.cache_data
+def load_data(file):
+    df_data = pd.read_csv(file)
+    return df_data
+df_data = st.file_uploader('')
+if df_data is None:
+    st.stop()
+df_data = load_data(df_data)
 
-df_data = pd.read_csv('Candidate_Sample_Set.csv')
+# df_data = pd.read_csv('Candidate_Sample_Set.csv')
 
 #Data Cleaning
 df_data = df_data.drop_duplicates()
