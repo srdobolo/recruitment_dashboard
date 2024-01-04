@@ -16,7 +16,7 @@ st.header(":bar_chart: Recruitment Dashboard")
 # Upload CSV File
 @st.cache_data
 def load_data(file):
-    df_data = pd.read_csv(file, encoding="utf8"))
+    df_data = pd.read_csv(file, encoding="utf8")
     return df_data
 df_data = st.file_uploader('')
 if df_data is None:
