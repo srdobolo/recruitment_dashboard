@@ -313,14 +313,14 @@ download1 = st.download_button(
     mime='text/csv'
 )
 
-# download button 2 to download dataframe as xlsx
-with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
-    # Write each dataframe to a different worksheet.
-    df_selection.to_excel(writer, sheet_name='st.Recuitment Dashboard', index=False)
+# # download button 2 to download dataframe as xlsx
+# with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+#     # Write each dataframe to a different worksheet.
+#     df_selection.to_excel(writer, sheet_name='st.Recuitment Dashboard', index=False)
 
-    download2 = st.download_button(
-        label="💾 Download Excel",
-        data=buffer,
-        file_name='st.Recuitment Dashboard.csv.xlsx',
-        mime='application/vnd.ms-excel'
-    )
+#     download2 = st.download_button(
+#         label="💾 Download Excel",
+#         data=buffer,
+#         file_name='st.Recuitment Dashboard.csv.xlsx',
+#         mime='application/vnd.ms-excel'
+#     )
