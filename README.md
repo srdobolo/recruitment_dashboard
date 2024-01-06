@@ -11,11 +11,16 @@ A dynamic dashboard that shows lead recruitment performance indicators
 
 [] API Integration
 
+## How to use
+
+Download Candidate_Sample_set.csv file and upload it in the app section to upload file.
+
+![Upload_file](Upload_file.png)
+
 ## Index
 - <a href="## About">About </a>
 - <a href="## Tech Stack">Technology Used </a> 
 - <a href="## Layout">Layout </a>
-- <a href="## How to use">How to use </a>
 
 ## About
 This app is a free solutions to recruiters that want to get visual insights of their recruitment kpis with a dynamic dashboard that can be filtered by various parametters. There is a database menu where you can update your data set with a dataframe that can be filtered and searched for any value.
@@ -38,8 +43,4 @@ Database
 ![Database_Sidebar](Database_Sidebar.png)
 Database Sidebar
 
-## How to use
 
-Download Candidate_Sample_set.csv file and upload it in the app section to upload file.
-
-![Upload_file](Upload_file.png)
