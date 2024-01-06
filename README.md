@@ -1,7 +1,7 @@
 https://recruitmentdashboard.streamlit.app
 
 # Recruitment Dashboard
-![Home](home.png)
+![Home](img/Dashboard.png)
 A dynamic dashboard that shows lead recruitment performance indicators
 
 ## 🚧 Under Development 🚧
@@ -14,7 +14,7 @@ A dynamic dashboard that shows lead recruitment performance indicators
 ## How to use
 ### Download [Candidate_Sample_set](https://github.com/srdobolo/recruitment_dashboard/blob/main/Candidate_Sample_Set.csv) file and upload it in the app section to upload file.
 
-![Upload_file](Upload_file.png)
+![Upload_file](img/Upload_file.png)
 
 ## Index
 - <a href="https://github.com/srdobolo/recruitment_dashboard/tree/main#about"> About </a>
@@ -34,13 +34,13 @@ Comments, Fullname, Email, Phone_Number, Address, DoB, Gender, Language, Source,
 This app is build with Python 3.7.9 and uses <a href="https://numpy.org">NumPy</a> for mathematical functions, <a href="https://pandas.pydata.org">Pandas</a> to manipulate datafarmes, <a href="https://plotly.com">Plotly</a> for the visualization tools and Streamlit to turn data script into a WebApp and deploy on <a href="https://streamlit.io">Streamlit Cloud Platform </a>.
 
 ## Layout
-![Database](Database.png)
+![Database](img/Database.png)
 Database
 
-![Dashboard_Sidebar](Dashboard_Sidebar.png)
+![Dashboard_Sidebar](img/Dashboard_Sidebar.png)
 Dashboard Sidebar
 
-![Database_Sidebar](Database_Sidebar.png)
+![Database_Sidebar](img/Database_Sidebar.png)
 Database Sidebar
 
 
