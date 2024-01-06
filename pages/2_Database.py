@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
+import datetime
 import os
 
 #Streamlit Config
@@ -9,302 +10,365 @@ st.set_page_config(page_title='Data View',
                    page_icon=':bar_chart:',
                    layout='wide',
                    initial_sidebar_state="collapsed"
-                   )
+                   ) 
+st.header(":bar_chart: Recruitment Dashboard")
 
-#Upload CSV File
+#Upload excel File
 @st.cache_data
 def load_data(file):
-    df_data = pd.read_csv(file)
+    df_data = pd.read_excel(file)
     return df_data
 df_data = st.file_uploader('')
 if df_data is None:
     st.stop()
 df_data = load_data(df_data)
 
-# df_data = pd.read_csv('Candidate_Sample_Set.csv')
+# df_data = pd.read_excel('Candidate_Sample_Set.excel')
 
-#Data Cleaning
-df_data = df_data.drop_duplicates()
+#Month Filter
+col1, col2 = st.columns((2))
+df_data["Application_Date"] = pd.to_datetime(df_data["Application_Date"])
 
-st.sidebar.markdown("Desenvolvido por [jLime](https://www.linkedin.com/in/joaomiguellima/)")
+    # Getting the min and max date 
+startDate = pd.to_datetime(df_data["Application_Date"]).min()
+endDate = pd.to_datetime(df_data["Application_Date"]).max()
 
-# Data Editing
-from typing import Any, Dict
-from pandas.api.types import (
-    is_categorical_dtype,
-    is_datetime64_any_dtype,
-    is_numeric_dtype,
-    is_object_dtype,
+with col1:
+    date1 = pd.to_datetime(st.date_input("Start Date", startDate))
+
+with col2:
+    date2 = pd.to_datetime(st.date_input("End Date", endDate))
+
+df_data = df_data[(df_data["Application_Date"] >= date1) & (df_data["Application_Date"] <= date2)]
+
+#Sidebar Filters
+st.sidebar.header('Filter Here:')
+language = st.sidebar.multiselect(
+    "Language",
+    options=df_data['Language'].unique(),
+    default=df_data['Language'].unique()
+)
+location = st.sidebar.multiselect(
+    "Location",
+    options=df_data['Location'].unique(),
+    default=df_data['Location'].unique(),
+)
+gender = st.sidebar.multiselect(
+    "Gender",
+    options=df_data['Gender'].unique(),
+    default=df_data['Gender'].unique()
+)
+# recruitment_stages = st.sidebar.multiselect(
+#     "Recruitment Stages",
+#     options=df_data['Recruitment_Stages'].unique(),
+#     default=df_data['Recruitment_Stages'].unique()
+# )
+# source = st.sidebar.multiselect(
+#     "Source",
+#     options=df_data['Source'].unique(),
+#     default=df_data['Source'].unique()
+# )
+# status = st.sidebar.multiselect(
+#     "Status",
+#     options=df_data['Status'].unique(),
+#     default=df_data['Status'].unique()
+# )
+company = st.sidebar.multiselect(
+    "Company",
+    options=df_data['Company'].unique(),
+    default=df_data['Company'].unique()
+)
+df_selection = df_data.query(
+    "Language == @language & Location == @location & Gender == @gender & Company == @company" #Can add "Recruitment_Stages","Status" and "Source"
 )
 
-def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFrame:
-    """
-    Adds a UI on top of a dataframe to let viewers filter columns
+st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
-    Args:
-        df (pd.DataFrame): Original dataframe
-        case (bool, optional): If True, text inputs will be case sensitive. Defaults to True.
+#TOP KPI'S
+#Hired
+try:
+    hired = df_selection['Recruitment_Stages'].value_counts()['Hired']
+except:
+    hired = 0
 
-    Returns:
-        pd.DataFrame: Filtered dataframe
-    """
+#Applications Per Hire
+try:    
+    apps_per_hire = len(df_selection)/df_selection['Recruitment_Stages'].value_counts()['Hired']
+except:
+    apps_per_hire = 0
 
-    random_key_base = pd.util.hash_pandas_object(df_data)
+#Days to Hire
+try:
+    df_days_to_hire = df_selection.loc[df_selection['Recruitment_Stages'] == 'Hired']
+    df_days_to_hire[['Application_Date','Hiring_Date']] = df_days_to_hire[['Application_Date','Hiring_Date']].apply(pd.to_datetime)
+    df_days_to_hire['Days_To_Hire'] = (df_days_to_hire['Hiring_Date'] - df_days_to_hire['Application_Date']).dt.days
+    days_to_hire = df_days_to_hire['Days_To_Hire'].mean()
+    days_to_hire = days_to_hire.round()
+except:
+    days_to_hire = 0
 
-    df_data = df_data.copy()
+#Success Rate
+try:    
+    success_rate = df_selection['Status'].value_counts()['Placement']/df_selection['Recruitment_Stages'].value_counts()['Hired']*100
+except:
+    success_rate = 0
 
-    # Try to convert datetimes into standard format (datetime, no timezone)
-    for col in df_data.columns:
-        if is_object_dtype(df_data[col]):
-            try:
-                df_data[col] = pd.to_datetime(df_data[col])
-            except Exception:
-                pass
-
-        if is_datetime64_any_dtype(df_data[col]):
-            df_data[col] = df_data[col].dt.tz_localize(None)
-
-    modification_container = st.container()
-
-    with modification_container:
-        to_filter_columns = st.multiselect(
-            "Filter dataframe on",
-            df_data.columns,
-            key=f"{random_key_base}_multiselect",
+first_column, second_column, third_column, fourth_column = st.columns (4)
+with first_column:
+    fig1 = go.Figure(go.Indicator(
+        domain = {'x': [0, 1],'y': [0, 1]},
+        value = hired,
+        mode = "gauge+number", #"gauge+number+delta"
+        title = {'text': "Hired"},
+        delta = {'reference': 0},
+        gauge = {'axis': {'range': [None, hired*apps_per_hire/2.5]},
+                }))
+    fig1.update_layout(height=200,
+                       margin=dict(l=10, r=10, t=50, b=10, pad=8),
+                       )
+    st.plotly_chart(fig1,
+                    use_container_width=True)
+with second_column:
+    fig2 = go.Figure(go.Indicator(
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        value = success_rate,
+        number = {'suffix': " %"},
+        mode = "gauge+number", #"gauge+number+delta"
+        title = {'text': "Success Rate"},
+        delta = {'reference': 0},
+        gauge = {'axis': {'range': [ 0, 100 ]},
+                }))
+    fig2.update_layout(
+        height=200,
+        margin=dict(l=10, r=10, t=50, b=10, pad=8),   
         )
-        filters: Dict[str, Any] = dict()
-        for column in to_filter_columns:
-            left, right = st.columns((1, 30))
-            if is_categorical_dtype(df_data[column]) or df_data[column].nunique() < 30:
-                left.write("↳")
-                filters[column] = right.multiselect(
-                    f"Values for {column}",
-                    df_data[column].unique(),
-                    default=list(df_data[column].unique()),
-                    key=f"{random_key_base}_{column}",
-                )
-                df_data = df_data[df_data[column].isin(filters[column])]
-            elif is_numeric_dtype(df_data[column]):
-                left.write("↳")
-                _min = float(df_data[column].min())
-                _max = float(df_data[column].max())
-                step = (_max - _min) / 100
-                filters[column] = right.slider(
-                    f"Values for {column}",
-                    _min,
-                    _max,
-                    (_min, _max),
-                    step=step,
-                    key=f"{random_key_base}_{column}",
-                )
-                df_data = df_data[df_data[column].between(*filters[column])]
-            elif is_datetime64_any_dtype(df_data[column]):
-                left.write("↳")
-                filters[column] = right.date_input(
-                    f"Values for {column}",
-                    value=(
-                        df_data[column].min(),
-                        df_data[column].max(),
-                    ),
-                    key=f"{random_key_base}_{column}",
-                )
-                if len(filters[column]) == 2:
-                    filters[column] = tuple(map(pd.to_datetime, filters[column]))
-                    start_date, end_date = filters[column]
-                    df_data = df_data.loc[df_data[column].between(start_date, end_date)]
-            else:
-                left.write("↳")
-                filters[column] = right.text_input(
-                    f"Pattern in {column}",
-                    key=f"{random_key_base}_{column}",
-                )
-                if filters[column]:
-                    df_data = df_data[df_data[column].str.contains(filters[column], case=case)]
-    select_column = st.multiselect(
-        "Columns:",
-        df_data.columns,
-        default=['Fullname','Email','Phone_Number','Language','Company','Location','Recruitment_Stages','Status','Comments'])
-    df_data = df_data[select_column]
+    st.plotly_chart(fig2, use_container_width=True)
+with third_column:
+    fig3 = go.Figure(go.Indicator(
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        value = apps_per_hire,
+        mode = "gauge+number", #"gauge+number+delta"
+        title = {'text': "Applications per Hire"},
+        delta = {'reference': 0},
+        gauge = {'axis': {'range': [apps_per_hire*2, 0 ]},
+                }))
+    fig3.update_layout(
+        height=200,
+        margin=dict(l=10, r=10, t=50, b=10, pad=8),   
+        )
+    st.plotly_chart(fig3, use_container_width=True)
+with fourth_column:
+    fig4 = go.Figure(go.Indicator(
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        value = days_to_hire,
+        mode = "gauge+number", #"gauge+number+delta"
+        title = {'text': "Days to Hire"},
+        delta = {'reference': 0},
+        gauge = {'axis': {'range': [days_to_hire*2 , 0 ]},
+                 }
+    )
+    )
+    fig4.update_layout(
+        height=200,
+        margin=dict(l=10, r=10, t=50, b=10, pad=8),
+    )
+    st.plotly_chart(fig4, use_container_width=True)
 
-    return df_data
+col1, col2, col3 = st.columns(3)
 
-#Dataframe
-df_selection= dataframe_explorer(df_data)
+#Recruitment Funnel
+with col1:
+    df_recruitment_funnel_index=['Hired',
+                                 'Offer',
+                                 'Interview',
+                                 'Harver Test',
+                                 'Phone Screening',
+                                 'Applied']
+    df_recruitment_funnel = pd.DataFrame(
+        df_selection['Recruitment_Stages'].value_counts(),
+        index=df_recruitment_funnel_index
+    )
+    
+    df_recruitment_funnel=df_recruitment_funnel.cumsum()
+    df_recruitment_funnel=df_recruitment_funnel.sort_values(by='Recruitment_Stages',ascending=False)
 
-df_selection = df_selection.iloc[::-1]
-df_selection = st.data_editor(
-    df_selection,
-    column_config={
-        "Fullname": st.column_config.TextColumn(
-            "Fullname",
-            help="Type fullname as text",
-            max_chars=50,
-            required=True,
+    recruitment_funnel = go.Figure(go.Funnel(
+        y = df_recruitment_funnel.index,
+        x = df_recruitment_funnel['Recruitment_Stages'],  
+        textposition = "inside",
+        textinfo = "percent initial"
+    )    
+    )
+    recruitment_funnel.update_layout(
+        title= "Recruitment Funnel",
+        showlegend=False,
+        yaxis_title=None,
+    )
+    recruitment_funnel
+
+#Stages Pipeline Pie
+with col2:
+    df_stages_pipeline = pd.DataFrame(
+        df_selection[['Application_Date',
+                     'Phone_Screen_Date',
+                     'Harver_Test_Date',
+                     'Interview_Date',
+                     'Offer_Date',
+                     'Hiring_Date']]
+    ).apply(pd.to_datetime)
+
+    df_recruitment_stages = pd.DataFrame(
+        df_selection[['Recruitment_Stages']]
+    )
+
+    df_stages_pipeline = pd.concat([df_recruitment_stages, df_stages_pipeline], axis=1)
+    df_stages_pipeline = df_stages_pipeline.fillna(axis=1, method='ffill')
+    df_stages_pipeline['Phone Screen'] = df_stages_pipeline['Phone_Screen_Date'] - df_stages_pipeline['Application_Date']
+    df_stages_pipeline['HarverTest'] = df_stages_pipeline['Harver_Test_Date'] - df_stages_pipeline['Phone_Screen_Date']
+    df_stages_pipeline['Interview'] = df_stages_pipeline['Interview_Date'] - df_stages_pipeline['Harver_Test_Date']
+    df_stages_pipeline['Offer'] = df_stages_pipeline['Offer_Date'] - df_stages_pipeline['Interview_Date']
+    df_stages_pipeline['Hire'] = df_stages_pipeline['Hiring_Date'] - df_stages_pipeline['Offer_Date']
+    df_stages_pipeline.replace('0 days', np.nan, inplace=True)
+    df_stages_pipeline = df_stages_pipeline.mean()
+    df_stages_pipeline = df_stages_pipeline / np.timedelta64(1, 'D')
+    df_stages_pipeline = df_stages_pipeline.round()
+       
+    stages_pipeline_pie = go.Figure(data=[go.Pie(
+        labels=['Phone Screen',
+                'HarverTest',
+                'Interview',
+                'Offer',
+                'Hire',
+                'Payment'],
+        values=df_stages_pipeline,
+        hole = 0.5)
+        ]
+        )
+    stages_pipeline_pie.update_layout(
+        title= "Recruitment Stages Pipeline",
+        legend=dict(
+            yanchor="bottom",
+            y=0.01,
+            xanchor="left",
+            x=0.01,
+            #number = {'suffix': 'Days'}
         ),
-        "Email": st.column_config.TextColumn(
-            "Email",
-            help="Type email as text",
-            max_chars=200,
-            required=True,
-        ),
-        "Phone_Number": st.column_config.TextColumn(
-            "Phone Number",
-            help="Type phone number as XXX-XXX-XXX-XXX",
-            max_chars=15,
-            required=True,
-        ),
-        "Address": st.column_config.TextColumn(
-            "Address",
-            help="Type Address as text",
-            max_chars=100,
-            required=False,
-        ),
-        "DoB": st.column_config.DateColumn(       
-            "DoB",
-            help="select Date Of Birth",
-        ),
-        "Gender": st.column_config.SelectboxColumn(
-            "Gender",
-            width='small',
-            help="Select Candidate Gender",
-            options=[
-                "F",
-                "M",
-                "Non-Binary",
-            ],
-            required=False,
-        ),
-        "Language": st.column_config.SelectboxColumn(
-            "Language",
-            width='small',
-            help="Select Candidate Main Language",
-            options=["NL",
-                     "DE",
-                     "FR",
-                     "IT",
-                     "CZ",
-                     "HE",
-                     "JA",
-                     "PT",
-                     "KO",
-                     "SK",
-                     "ES",
-                     "ET",
-                     "HU",
-                     "PL",
-                     "LT",
-                     "RO",
-                     "TR",
-                     "NO",
-                     "DA",
-                     "SW",
-                     "FI",
-                     "LV",
-                     "HR",
-                     "RU",
-                     "UK",
-                     "AZ",
-                     "IS",
-                     "BG",
-                     "EL",
-                     "ZH",
-                     "AR"
-            ],
-            required=False,
-        ),
-        "Recruitment_Stages": st.column_config.SelectboxColumn(
-            "Recruitment Stages",
-            help="Select Recruitment Stage Cadidate Is In",
-            options=[
-                "Interview",
-                "Phone Screening",
-                "Harver Test",
-                "Offer",
-                "Applied",
-                "Hired"
-            ],
-            required=False,
-        ),
-        "Status": st.column_config.SelectboxColumn(
-            "Status",
-            width='small',
-            help="Recruitment Process Status",
-            options=[
-                "On Hold",
-                "Rejected",
-                "Placement",
-                "Credit Note",
-                "Withdraw"
-            ],
-            required=False,
-        ),
-        "Decline_Reason": st.column_config.SelectboxColumn(
-            "Decline Reason",
-            width='small',
-            help="If rejected or withdraw select decline reason",
-            options=[
-                "Behavior",
-                "Technical",
-                "Experience",
-                "Language",
-                "Motivation",
-                "Profile",
-                "Other"
-            ],
-            required=False,
-        ),
-    },
-    hide_index=True,
-    height=500,
-    use_container_width=True
-    # num_rows='dynamic',
+        
+    )
+    stages_pipeline_pie.update_traces(
+        hoverinfo='label+percent',
+        textinfo='value',
+        textfont_size=15,
+    )                        
+    stages_pipeline_pie
+                                                                
+#Source Pie
+with col3:
+    source_pie = go.Figure(data=[go.Pie(labels=df_selection['Source'].unique(),
+                            values=df_selection['Source'].value_counts(),
+                            )
+                    ]
+                )
+    source_pie.update_layout(
+        title= "Source",
+        legend=dict(
+            yanchor="bottom",
+            y=0.01,
+            xanchor="left",
+            x=0.01,
+        )
+    )
+    source_pie.update_traces(
+        hoverinfo='label+value',
+    )                        
+    source_pie
+
+#Sources Performance
+df_source = pd.DataFrame(
+    df_selection[['Source','Recruitment_Stages']]
 )
 
-# Sidebar Form
-with st.sidebar.form(key='form', clear_on_submit=True):
-    fullname = st.text_input('Fullname',placeholder='Jane Doe') # required value @
-    email = st.text_input('Email', placeholder='jane.doe@gmail.com') # required value @
-    phone_number = st.text_input('Phone Number',placeholder='+123 987 654 321') # required value @
-    # address = st.text_input('Adress', placeholder='Street Name')
-    # dob = st.date_input('DoB', value=None)
-    # gender = st.selectbox("Gender",("M", "F", "Non-Binary"))
+    #% Applied
+df_applied = pd.DataFrame(
+    df_source['Source'].value_counts().to_frame('# Applied')
+)
+df_applied = df_applied.reset_index()
+df_applied['% Of Applications'] = df_applied['# Applied']/df_applied['# Applied'].sum()*100
 
-    submit = st.form_submit_button(label='Submit')
-    if submit:
-        if not email or not phone_number:
-            st.warning('Ensure all fields are filled')
-            st.stop()
-        elif df_selection['Email'].str.contains(email).any():
-            st.warning('A candidate with this email already exists')
-            st.stop()
-        elif df_selection['Phone_Number'].str.contains(phone_number).any():
-            st.warning('A candidate with this phone number already exists')
-            st.stop()
-        else:
-            candidate_data = pd.DataFrame(
-                [
-                    {
-                        "Fullname":fullname,
-                        "Email":email,
-                        "Phone_Number":phone_number
-                    }
-                ]
+    #% Hired
+df_hired = pd.DataFrame(
+    df_source[df_source['Recruitment_Stages'] == 'Hired'].value_counts().to_frame('# Hired')
+)
+df_hired = df_hired.reset_index()
+
+col4, col5 = st.columns(2)
+
+    #Source Performance
+df_source_performance = pd.concat([df_applied, df_hired], axis=1)
+df_source_performance.drop('Recruitment_Stages', axis='columns', inplace=True)
+df_source_performance.drop('Source', axis='columns', inplace=True)
+df_source_performance['% Of Hired'] = df_source_performance['# Hired']/df_source_performance['# Hired'].sum()*100 
+df_source_performance['% Of Conversion Rate'] = df_source_performance['# Hired']/df_source_performance['# Applied']*100 
+df_source_performance = df_source_performance.replace('',np.nan).fillna(0)
+df_source_performance.reset_index(drop=True, inplace=True)
+df_source_performance.rename(columns={"index": "Source"}, inplace=True)
+
+with col4:
+    st.subheader('Source Performance')
+    df_source_performance = st.dataframe(
+        df_source_performance,
+        column_config={
+            "% Of Applications": st.column_config.ProgressColumn(
+                "% Of Applications",
+                help="% Of Applications Received",
+                format="%.2f", # corrigir simbolo %
+                min_value=0,
+                max_value=100,
+            ),
+            "% Of Hired": st.column_config.ProgressColumn(
+                "% Of Hired",
+                help="% Of Hired From Total Hires",
+                format="%.2f", # corrigir simbolo %
+                min_value=0,
+                max_value=100,
+            ),
+            "% Of Conversion Rate": st.column_config.ProgressColumn(
+                "% Of Conversion Rate",
+                help="% Of Hired From Each Source",
+                format="%.2f", # corrigir simbolo %
+                min_value=0,
+                max_value=100,
+            ),
+        },
+        hide_index=True,
+        use_container_width=False
+    )
+
+#Decline Reasons
+with col5:
+    df_decline_reasons = pd.DataFrame(
+        df_selection[['Status','Decline_Reasons']]
+    )
+    df_decline_reasons = df_decline_reasons.loc[df_decline_reasons['Status'] == 'Rejected']
+
+    # #Of Applications
+    df_applications = pd.DataFrame(
+        df_decline_reasons['Decline_Reasons'].value_counts().to_frame('# Of Applications')
+    )
+    df_applications['% Of Applications'] = (df_applications['# Of Applications']/df_applications['# Of Applications'].sum())*100
+
+    st.subheader('Decline Reasons')
+    df_decline_reasons = st.dataframe(
+        df_applications,
+        column_config={
+            "% Of Applications": st.column_config.ProgressColumn(
+                "% Of Applications",
+                help="% Of Applications",
+                format="%.2f", # corrigir simbolo %
+                min_value=0,
+                max_value=100,
             )
-
-            # df_selection = pd.concat([df_selection, candidate_data], ignore_index=True)
-
-
-@st.cache_data
-def convert_df(df_selection):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df_selection.to_csv(index= False).encode('utf-8')
-
-csv = convert_df(df_selection)
-
-#Export Button
-st.download_button(
-    label="Export",
-    data=csv,
-    file_name='Candidates.csv',
-    mime='text/csv',
-)
+        },
+        hide_index=False,
+        use_container_width=False
+    )
