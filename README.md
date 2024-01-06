@@ -36,3 +36,8 @@ Database
 
 ![Database_Sidebar](Database_Sidebar.png)
 Database Sidebar
+
+## How to Use
+
+Download Candidate_Sample_set.csv file and upload it in the app section to upload file.
+![Upload_file](Upload_file.png)
