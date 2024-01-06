@@ -2,7 +2,7 @@ https://recruitmentdashboard.streamlit.app
 
 # Recruitment Dashboard
 ![Home](img/Dashboard.png)
-A dynamic dashboard that shows lead recruitment performance indicators
+A dynamic dashboard that shows recruitment key performance indicators
 
 ## 🚧 Under Development 🚧
 [] Add Candidate Form
