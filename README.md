@@ -18,7 +18,7 @@ Download [Candidate_Sample_Set](Candidate_Sample_set.csv) file and upload it in 
 ![Upload_file](Upload_file.png)
 
 ## Index
-- <a href="[## About](https://github.com/srdobolo/recruitment_dashboard/tree/main#about)">About </a>
+- <a href="https://github.com/srdobolo/recruitment_dashboard/tree/main#about"> About </a>
 - <a href="## Tech Stack">Technology Used </a> 
 - <a href="## Layout">Layout </a>
 
