@@ -20,7 +20,7 @@ Download [Candidate_Sample_Set](Candidate_Sample_set.csv) file and upload it in 
 ## Index
 - <a href="https://github.com/srdobolo/recruitment_dashboard/tree/main#about"> About </a>
 - <a href="https://github.com/srdobolo/recruitment_dashboard/tree/main#technology-used">Technology Used </a> 
-- <a href="## Layout">Layout </a>
+- <a href="https://github.com/srdobolo/recruitment_dashboard/blob/main/README.md#layout">Layout </a>
 
 ## About
 This app is a free solutions to recruiters that want to get visual insights of their recruitment kpis with a dynamic dashboard that can be filtered by various parametters. There is a database menu where you can update your data set with a dataframe that can be filtered and searched for any value.
