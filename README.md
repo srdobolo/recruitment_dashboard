@@ -23,8 +23,9 @@ Download [Candidate_Sample_set](https://github.com/srdobolo/recruitment_dashboar
 - <a href="https://github.com/srdobolo/recruitment_dashboard/blob/main/README.md#layout">Layout </a>
 
 ## About
-This app is a free solutions to recruiters that want to get visual insights of their recruitment kpis with a dynamic dashboard that can be filtered by various parametters. There is a database menu where you can update your data set with a dataframe that can be filtered and searched for any value.
+An app that offers a free solution for recruiters seeking visual insights into their recruitment KPIs. It features a dynamic dashboard that allows filtering by language, location, gender, or company within a selected time range.
 
+The sidebar menu not only enables filtering of the dashboard but also allows users to navigate to a database dataframe. Within this dataframe, users can select specific columns to view and search for particular values within each row.
 An excell template is provided to test the app although any excell file with the columns "Fullname","Phone_Number" and "Email" will work. The columns doesn't have to follow any specific order.
 
 The recommend columns to get all the kpis available in the app are:
