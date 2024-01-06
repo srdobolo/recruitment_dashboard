@@ -13,7 +13,7 @@ A dynamic dashboard that shows lead recruitment performance indicators
 
 ## How to use
 
-Download [Candidate_Sample_Set](Candidate_Sample_set.csv) file and upload it in the app section to upload file.
+Download [Candidate_Sample_set.csv](https://github.com/srdobolo/recruitment_dashboard/blob/main/Candidate_Sample_Set.csv) file and upload it in the app section to upload file.
 
 ![Upload_file](Upload_file.png)
 
