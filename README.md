@@ -25,7 +25,7 @@ This app is a free solutions to recruiters that want to get visual insights of t
 An excell template is provided to test the app although any excell file with the columns "Fullname","Phone_Number" and "Email" will work. The columns doesn't have to follow any specific order.
 
 The recommend columns to get the full experience of the app are:
-[Comments,
+Comments,
 Fullname,
 Email,
 Phone_Number,
@@ -46,7 +46,7 @@ Interview_Date,
 Offer_Date,
 Hiring_Date,
 Payment_Date,
-Modification_Date]
+Modification_Date
 
 ## Technology Used
 This app is build with Python 3.7.9 and uses <a href="https://numpy.org">NumPy</a> for mathematical functions, <a href="https://pandas.pydata.org">Pandas</a> to manipulate datafarmes, <a href="https://plotly.com">Plotly</a> for the visualization tools and Streamlit to turn data script into a WebApp and deploy on <a href="https://streamlit.io">Streamlit Cloud Platform </a>.
