@@ -127,11 +127,11 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
     return df_data
 
 #Dataframe
-df_selection= dataframe_explorer(df_data)
+df_data = dataframe_explorer(df_data)
 
-df_selection = df_selection.iloc[::-1]
-df_selection = st.data_editor(
-    df_selection,
+df_data = df_data.iloc[::-1]
+df_data = st.data_editor(
+    df_data,
     column_config={
         "Fullname": st.column_config.TextColumn(
             "Fullname",
@@ -273,10 +273,10 @@ df_selection = st.data_editor(
 #         if not email or not phone_number:
 #             st.warning('Ensure all fields are filled')
 #             st.stop()
-#         elif df_selection['Email'].str.contains(email).any():
+#         elif df_data['Email'].str.contains(email).any():
 #             st.warning('A candidate with this email already exists')
 #             st.stop()
-#         elif df_selection['Phone_Number'].str.contains(phone_number).any():
+#         elif df_data['Phone_Number'].str.contains(phone_number).any():
 #             st.warning('A candidate with this phone number already exists')
 #             st.stop()
 #         else:
@@ -290,7 +290,7 @@ df_selection = st.data_editor(
 #                 ]
 #             )
 
-#             # df_selection = pd.concat([df_selection, candidate_data], ignore_index=True)
+#             # df_data = pd.concat([df_data, candidate_data], ignore_index=True)
 
 st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
@@ -300,10 +300,10 @@ import io
 buffer = io.BytesIO()
 
 @st.cache_data
-def convert_to_csv(df_selection):
+def convert_to_csv(df_data):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df_selection.to_csv(index=False).encode('utf-8')
-csv = convert_to_csv(df_selection)
+    return df_data.to_csv(index=False).encode('utf-8')
+csv = convert_to_csv(df_data)
 
 # download button 1 to download dataframe as csv
 download1 = st.download_button(
@@ -316,7 +316,7 @@ download1 = st.download_button(
 # # download button 2 to download dataframe as xlsx
 # with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
 #     # Write each dataframe to a different worksheet.
-#     df_selection.to_excel(writer, sheet_name='st.Recuitment Dashboard', index=False)
+#     df_data.to_excel(writer, sheet_name='st.Recuitment Dashboard', index=False)
 
 #     download2 = st.download_button(
 #         label="💾 Download Excel",
