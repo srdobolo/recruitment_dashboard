@@ -1,7 +1,5 @@
 https://recruitmentdashboard.streamlit.app
 
-<img src="home.png">
-
 # Recruitment Dashboard
 ![Home](home.png)
 A dynamic dashboard that shows lead recruitment performance indicators
