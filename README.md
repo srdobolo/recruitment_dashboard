@@ -4,7 +4,7 @@ https://recruitmentdashboard.streamlit.app
 ![Home](home.png)
 A dynamic dashboard that shows lead recruitment performance indicators
 
-## Under Development
+## 🚧 Under Development 🚧
 [ ] Add Candidate Form
 
 [ ] Modification_Date Column
