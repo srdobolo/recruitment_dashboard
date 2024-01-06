@@ -5,11 +5,9 @@ https://recruitmentdashboard.streamlit.app
 A dynamic dashboard that shows lead recruitment performance indicators
 
 ## Under Development
-[] Add Candidate Form
-
-[] Modification_Date Column
-
-[] API Integration
+[ ] Add Candidate Form
+[ ] Modification_Date Column
+[ ] API Integration
 
 ## Index
 - <a href="## About">About </a>
