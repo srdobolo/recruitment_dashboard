@@ -13,17 +13,17 @@ st.set_page_config(page_title='Data View',
                    ) 
 st.header(":bar_chart: Recruitment Dashboard")
 
-# Upload CSV File
+#Upload excel File
 @st.cache_data
 def load_data(file):
-    df_data = pd.read_csv(file, encoding="utf8")
+    df_data = pd.read_excel(file)
     return df_data
 df_data = st.file_uploader('')
 if df_data is None:
     st.stop()
 df_data = load_data(df_data)
 
-# df_data = pd.read_csv('Candidate_Sample_Set.csv', encoding="utf8")
+# df_data = pd.read_excel('Candidate_Sample_Set.excel')
 
 #Month Filter
 col1, col2 = st.columns((2))
@@ -82,7 +82,7 @@ df_selection = df_data.query(
     "Language == @language & Location == @location & Gender == @gender & Company == @company" #Can add "Recruitment_Stages","Status" and "Source"
 )
 
-st.sidebar.markdown("Desenvolvido por [jLime](https://www.linkedin.com/in/joaomiguellima/)")
+st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
 #TOP KPI'S
 #Hired
@@ -314,7 +314,7 @@ df_source_performance.reset_index(drop=True, inplace=True)
 df_source_performance.rename(columns={"index": "Source"}, inplace=True)
 
 with col4:
-    st.subheader('Sources Performance')
+    st.subheader('Source Performance')
     df_source_performance = st.dataframe(
         df_source_performance,
         column_config={
