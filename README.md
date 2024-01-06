@@ -34,11 +34,11 @@ Comments, Fullname, Email, Phone_Number, Address, DoB, Gender, Language, Source,
 This app is build with Python 3.7.9 and uses <a href="https://numpy.org">NumPy</a> for mathematical functions, <a href="https://pandas.pydata.org">Pandas</a> to manipulate datafarmes, <a href="https://plotly.com">Plotly</a> for the visualization tools and Streamlit to turn data script into a WebApp and deploy on <a href="https://streamlit.io">Streamlit Cloud Platform </a>.
 
 ## Layout
-![Dashboard_Sidebar](Dashboard_Sidebar.png)
-Dashboard Sidebar
-
 ![Database](Database.png)
 Database
+
+![Dashboard_Sidebar](Dashboard_Sidebar.png)
+Dashboard Sidebar
 
 ![Database_Sidebar](Database_Sidebar.png)
 Database Sidebar
