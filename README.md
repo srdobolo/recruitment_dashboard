@@ -12,7 +12,7 @@ A dynamic dashboard that shows recruitment key performance indicators
 [] API Integration
 
 ## How to use
-### Download [Candidate_Sample_set](https://github.com/srdobolo/recruitment_dashboard/blob/main/Candidate_Sample_Set.csv) file and upload it in the app section to upload file.
+### Download [Candidate_Sample_Set](https://github.com/srdobolo/recruitment_dashboard/blob/main/Candidate_Sample_Set.csv) file and upload it in the app section to upload file.
 
 ![Upload_file](img/Upload_file.png)
 
