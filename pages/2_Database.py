@@ -14,7 +14,7 @@ st.set_page_config(page_title='Data View',
 #Upload csv or excel File
 @st.cache_data
 def load_data(file):
-    df_data = pd.read_csv(file)
+    df_data = pd.read_excel(file)
     return df_data
 df_data = st.file_uploader('')
 if df_data is None:
@@ -255,42 +255,42 @@ df_selection = st.data_editor(
     hide_index=True,
     height=450,
     width=None,
-    use_container_width=True
-    # num_rows='dynamic',
+    use_container_width=True,
+    num_rows='dynamic'
 )
 
 # Sidebar Form
-with st.sidebar.form(key='form', clear_on_submit=True):
-    fullname = st.text_input('Fullname',placeholder='Jane Doe') # required value @
-    email = st.text_input('Email', placeholder='jane.doe@gmail.com') # required value @
-    phone_number = st.text_input('Phone Number',placeholder='+123 987 654 321') # required value @
-    # address = st.text_input('Adress', placeholder='Street Name')
-    # dob = st.date_input('DoB', value=None)
-    # gender = st.selectbox("Gender",("M", "F", "Non-Binary"))
+# with st.sidebar.form(key='form', clear_on_submit=True):
+#     fullname = st.text_input('Fullname',placeholder='Jane Doe') # required value @
+#     email = st.text_input('Email', placeholder='jane.doe@gmail.com') # required value @
+#     phone_number = st.text_input('Phone Number',placeholder='+123 987 654 321') # required value @
+#     # address = st.text_input('Adress', placeholder='Street Name')
+#     # dob = st.date_input('DoB', value=None)
+#     # gender = st.selectbox("Gender",("M", "F", "Non-Binary"))
 
-    submit = st.form_submit_button(label='Submit')
-    if submit:
-        if not email or not phone_number:
-            st.warning('Ensure all fields are filled')
-            st.stop()
-        elif df_selection['Email'].str.contains(email).any():
-            st.warning('A candidate with this email already exists')
-            st.stop()
-        elif df_selection['Phone_Number'].str.contains(phone_number).any():
-            st.warning('A candidate with this phone number already exists')
-            st.stop()
-        else:
-            candidate_data = pd.DataFrame(
-                [
-                    {
-                        "Fullname":fullname,
-                        "Email":email,
-                        "Phone_Number":phone_number
-                    }
-                ]
-            )
+#     submit = st.form_submit_button(label='Submit')
+#     if submit:
+#         if not email or not phone_number:
+#             st.warning('Ensure all fields are filled')
+#             st.stop()
+#         elif df_selection['Email'].str.contains(email).any():
+#             st.warning('A candidate with this email already exists')
+#             st.stop()
+#         elif df_selection['Phone_Number'].str.contains(phone_number).any():
+#             st.warning('A candidate with this phone number already exists')
+#             st.stop()
+#         else:
+#             candidate_data = pd.DataFrame(
+#                 [
+#                     {
+#                         "Fullname":fullname,
+#                         "Email":email,
+#                         "Phone_Number":phone_number
+#                     }
+#                 ]
+#             )
 
-            # df_selection = pd.concat([df_selection, candidate_data], ignore_index=True)
+#             # df_selection = pd.concat([df_selection, candidate_data], ignore_index=True)
 
 st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
@@ -312,3 +312,15 @@ download1 = st.download_button(
     file_name='st.Recuitment Dashboard.csv',
     mime='text/csv'
 )
+
+# download button 2 to download dataframe as xlsx
+with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+    # Write each dataframe to a different worksheet.
+    df_selection.to_excel(writer, sheet_name='st.Recuitment Dashboard', index=False)
+
+    download2 = st.download_button(
+        label="💾 Download Excel",
+        data=buffer,
+        file_name='st.Recuitment Dashboard.csv.xlsx',
+        mime='application/vnd.ms-excel'
+    )
