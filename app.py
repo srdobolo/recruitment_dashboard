@@ -16,7 +16,7 @@ st.header(":bar_chart: Recruitment Dashboard")
 #Upload excel File
 @st.cache_data
 def load_data(file):
-    df_data = pd.read_excel(file)
+    df_data = pd.read_excel(file,engine='openpyxl')
     return df_data
 df_data = st.file_uploader('')
 if df_data is None:
