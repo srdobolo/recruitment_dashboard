@@ -19,7 +19,7 @@ Download [Candidate_Sample_Set](Candidate_Sample_set.csv) file and upload it in 
 
 ## Index
 - <a href="https://github.com/srdobolo/recruitment_dashboard/tree/main#about"> About </a>
-- <a href="## Tech Stack">Technology Used </a> 
+- <a href="https://github.com/srdobolo/recruitment_dashboard/tree/main#technology-used">Technology Used </a> 
 - <a href="## Layout">Layout </a>
 
 ## About
