@@ -256,7 +256,8 @@ df_data = st.data_editor(
     height=450,
     width=None,
     use_container_width=True,
-    num_rows='dynamic'
+    num_rows='dynamic',
+    on_change=True
 )
 
 # Sidebar Form
