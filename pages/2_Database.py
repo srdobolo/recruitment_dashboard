@@ -124,6 +124,8 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
             df_data.columns,
             default=['Fullname','Email','Phone_Number','Language','Company','Location','Recruitment_Stages','Status','Comments']
         )
+        df_data = df_data[select_column]
+        return df_data
     except:
         select_column = st.multiselect(
             "Columns:",
@@ -132,11 +134,12 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
         )
         df_data = df_data[select_column]
         return df_data
+   
 
 #Dataframe
 df_data = dataframe_explorer(df_data)
 
-df_data = df_data.iloc[::-1]
+# df_data = df_data.iloc[::-1]
 df_data = st.data_editor(
     df_data,
     column_config={
@@ -267,13 +270,6 @@ df_data = st.data_editor(
     on_change=True
 )
 
-savedata = df_data.to_dict()
-import json
-
-if st.button(label="Save Data"):
-    st.success("Data saved")
-    with open("Save_dataframe.json", "w") as data:
-        json.dump(savedata, data)
 # Sidebar Form
 # with st.sidebar.form(key='form', clear_on_submit=True):
 #     fullname = st.text_input('Fullname',placeholder='Jane Doe') # required value @
@@ -310,6 +306,15 @@ if st.button(label="Save Data"):
 st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
 #Save Button
+
+# savedata = df_data.to_dict()
+# import json
+
+# if st.button(label="Save Data"):
+#     st.success("Data saved")
+#     with open("Save_dataframe.json", "w") as data:
+#         json.dump(savedata, data)
+
 import io
 # buffer to use for excel writer
 buffer = io.BytesIO()
