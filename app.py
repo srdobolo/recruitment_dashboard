@@ -225,7 +225,7 @@ with col1:
                 showlegend=False,
                 yaxis_title=None,
             )
-        recruitment_funnel
+        st.plotly_chart(recruitment_funnel, use_container_width=True)
     except:
         st.subheader('Recruitment Funnel')
         st.write('⚠️ Create Recruitment_Stages column to get this chart')
@@ -285,7 +285,7 @@ with col2:
             textinfo='value',
             textfont_size=15,
         )                        
-        col2.stages_pipeline_pie
+        st.plotly_chart(stages_pipeline_pie, use_container_width=True)
     except:
         st.subheader('Recruitment Stages Pipeline')
         st.write('⚠️ Create Recruitment_Stages date columns to get this chart')                                                    
@@ -309,12 +309,12 @@ with col3:
         source_pie.update_traces(
             hoverinfo='label+value',
         )                        
-        source_pie
+        st.plotly_chart(source_pie, use_container_width=True)
     except:
         st.subheader('Source')
         st.write('⚠️ Create Source column to get this chart')               
 
-col4, col5 = st.columns(2)
+col4, col5 = st.columns([2, 1])
 #Sources Performance
 with col4:
     try:
@@ -372,7 +372,7 @@ with col4:
                 ),
             },
             hide_index=True,
-            use_container_width=False
+            use_container_width=True
         )
     except:
         st.subheader('Source Performance')
@@ -405,7 +405,7 @@ with col5:
                 )
             },
             hide_index=False,
-            use_container_width=False
+            use_container_width=True
         )
     except:
         st.subheader('Decline Reasons')
