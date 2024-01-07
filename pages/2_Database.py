@@ -16,7 +16,7 @@ st.set_page_config(page_title='Data View',
 def load_data(file):
     df_data = pd.read_csv(file)
     return df_data
-df_data = st.file_uploader('', on_change=True)
+df_data = st.file_uploader('')
 if df_data is None:
     st.stop()
 df_data = load_data(df_data)
