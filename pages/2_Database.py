@@ -129,7 +129,8 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
     except:
         select_column = st.multiselect(
             "Columns:",
-            df_data.columns,
+            options = df_data.columns,
+            default = ['Fullname','Email','Phone_Number']
         )
         df_data = df_data[select_column]
         return df_data
