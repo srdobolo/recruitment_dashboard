@@ -118,13 +118,20 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
                 )
                 if filters[column]:
                     df_data = df_data[df_data[column].str.contains(filters[column], case=case)]
-    select_column = st.multiselect(
-        "Columns:",
-        df_data.columns,
-        default=['Fullname','Email','Phone_Number','Language','Company','Location','Recruitment_Stages','Status','Comments'])
-    df_data = df_data[select_column]
-
-    return df_data
+    try:                
+        select_column = st.multiselect(
+            "Columns:",
+            df_data.columns,
+            default=['Fullname','Email','Phone_Number','Language','Company','Location','Recruitment_Stages','Status','Comments']
+        )
+    except:
+        select_column = st.multiselect(
+            "Columns:",
+            df_data.columns,
+            default=['Fullname','Email','Phone_Number']
+        )
+        df_data = df_data[select_column]
+        return df_data
 
 #Dataframe
 df_data = dataframe_explorer(df_data)
@@ -260,6 +267,13 @@ df_data = st.data_editor(
     on_change=True
 )
 
+savedata = df_data.to_dict()
+import json
+
+if st.button(label="Save Data"):
+    st.success("Data saved")
+    with open("Save_dataframe.json", "w") as data:
+        json.dump(savedata, data)
 # Sidebar Form
 # with st.sidebar.form(key='form', clear_on_submit=True):
 #     fullname = st.text_input('Fullname',placeholder='Jane Doe') # required value @
