@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import os
 
 #Streamlit Config
-st.set_page_config(page_title='Data View',
+st.set_page_config(page_title='Database',
                    page_icon=':bar_chart:',
                    layout='wide',
                    initial_sidebar_state="collapsed"
