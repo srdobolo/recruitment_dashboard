@@ -14,16 +14,16 @@ st.set_page_config(page_title='Data View',
 st.header(":bar_chart: Recruitment Dashboard")
 
 #Upload excel File
-@st.cache_data
-def load_data(file):
-    df_data = pd.read_csv(file)
-    return df_data
-df_data = st.file_uploader('')
-if df_data is None:
-    st.stop()
-df_data = load_data(df_data)
+# @st.cache_data
+# def load_data(file):
+#     df_data = pd.read_csv(file)
+#     return df_data
+# df_data = st.file_uploader('')
+# if df_data is None:
+#     st.stop()
+# df_data = load_data(df_data)
 
-# df_data = pd.read_csv('Candidate_Sample_Set.csv')
+df_data = pd.read_csv('Candidate_Sampl
 
 #Month Filter
 col1, col2 = st.columns((2))
