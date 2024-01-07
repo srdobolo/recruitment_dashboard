@@ -135,62 +135,95 @@ except:
 
 first_column, second_column, third_column, fourth_column = st.columns (4)
 with first_column:
-    fig1 = go.Figure(go.Indicator(
-        domain = {'x': [0, 1],'y': [0, 1]},
-        value = hired,
-        mode = "gauge+number", #"gauge+number+delta"
-        title = {'text': "Hired"},
-        delta = {'reference': 0},
-        gauge = {'axis': {'range': [None, hired*apps_per_hire/2.5]},
-                }))
-    fig1.update_layout(height=200,
-                       margin=dict(l=10, r=10, t=50, b=10, pad=8),
-                       )
-    st.plotly_chart(fig1,
-                    use_container_width=True)
+    fig1 = go.Figure(
+        go.Indicator(
+            domain = {'x': [0, 1],'y': [0, 1]},
+            value = hired,
+            mode = "gauge+number", #"gauge+number+delta"
+            title = {'text': "Hired"},
+            delta = {'reference': 0},
+            gauge = {'axis': {'range': [None, hired*apps_per_hire/2.5]}}
+        )
+    )
+    fig1.update_layout(
+        height=200,
+        margin=dict(
+            l=10,
+            r=10,
+            t=50,
+            b=10,
+            pad=8
+        )
+    )
+    st.plotly_chart(fig1, use_container_width=True)
+
 with second_column:
-    fig2 = go.Figure(go.Indicator(
-        domain = {'x': [0, 1], 'y': [0, 1]},
-        value = success_rate,
-        number = {'suffix': " %"},
-        mode = "gauge+number", #"gauge+number+delta"
-        title = {'text': "Success Rate"},
-        delta = {'reference': 0},
-        gauge = {'axis': {'range': [ 0, 100 ]},
-                }))
+    fig2 = go.Figure(
+        go.Indicator(
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            value = success_rate,
+            number = {'suffix': " %"},
+            mode = "gauge+number", #"gauge+number+delta"
+            title = {'text': "Success Rate"},
+            delta = {'reference': 0},
+            gauge = {'axis': {'range': [ 0, 100 ]}}
+        )
+    )
     fig2.update_layout(
         height=200,
-        margin=dict(l=10, r=10, t=50, b=10, pad=8),   
-        )
+        margin=dict(
+            l=10,
+            r=10,
+            t=50,
+            b=10,
+            pad=8
+        )   
+    )
     st.plotly_chart(fig2, use_container_width=True)
+
 with third_column:
-    fig3 = go.Figure(go.Indicator(
-        domain = {'x': [0, 1], 'y': [0, 1]},
-        value = apps_per_hire,
-        mode = "gauge+number", #"gauge+number+delta"
-        title = {'text': "Applications per Hire"},
-        delta = {'reference': 0},
-        gauge = {'axis': {'range': [apps_per_hire*2, 0 ]},
-                }))
+    fig3 = go.Figure(
+        go.Indicator(
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            value = apps_per_hire,
+            mode = "gauge+number", #"gauge+number+delta"
+            title = {'text': "Applications per Hire"},
+            delta = {'reference': 0},
+            gauge = {'axis': {'range': [apps_per_hire*2, 0 ]}}
+        )
+    )
     fig3.update_layout(
         height=200,
-        margin=dict(l=10, r=10, t=50, b=10, pad=8),   
+        margin=dict(
+            l=10,
+            r=10,
+            t=50,
+            b=10,
+            pad=8
         )
-    st.plotly_chart(fig3, use_container_width=True)
-with fourth_column:
-    fig4 = go.Figure(go.Indicator(
-        domain = {'x': [0, 1], 'y': [0, 1]},
-        value = days_to_hire,
-        mode = "gauge+number", #"gauge+number+delta"
-        title = {'text': "Days to Hire"},
-        delta = {'reference': 0},
-        gauge = {'axis': {'range': [days_to_hire*2 , 0 ]},
-                 }
     )
+    st.plotly_chart(fig3, use_container_width=True)
+
+with fourth_column:
+    fig4 = go.Figure(
+        go.Indicator(
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            value = days_to_hire,
+            mode = "gauge+number", #"gauge+number+delta"
+            title = {'text': "Days to Hire"},
+            delta = {'reference': 0},
+            gauge = {'axis': {'range': [days_to_hire*2 , 0 ]}}
+        )
     )
     fig4.update_layout(
         height=200,
-        margin=dict(l=10, r=10, t=50, b=10, pad=8),
+        margin=dict(
+            l=10,
+            r=10,
+            t=50,
+            b=10,
+            pad=8
+        )
     )
     st.plotly_chart(fig4, use_container_width=True)
 
@@ -198,40 +231,41 @@ col1, col2, col3 = st.columns(3)
 
 #Recruitment Funnel
 with col1:
+    st.subheader('Recruitment Funnel')
     try:
         df_recruitment_funnel_index=['Hired',
-                                 'Offer',
-                                 'Interview',
-                                 'Harver Test',
-                                 'Phone Screening',
-                                 'Applied']
+                                     'Offer',
+                                     'Interview',
+                                     'Harver Test',
+                                     'Phone Screening',
+                                     'Applied']
         df_recruitment_funnel = pd.DataFrame(
-        df_selection['Recruitment_Stages'].value_counts(),
-        index=df_recruitment_funnel_index
+            df_selection['Recruitment_Stages'].value_counts(),
+            index=df_recruitment_funnel_index
         )
     
         df_recruitment_funnel=df_recruitment_funnel.cumsum()
         df_recruitment_funnel=df_recruitment_funnel.sort_values(by='Recruitment_Stages',ascending=False)
 
-        recruitment_funnel = go.Figure(go.Funnel(
-            y = df_recruitment_funnel.index,
-            x = df_recruitment_funnel['Recruitment_Stages'],  
-            textposition = "inside",
-            textinfo = "percent initial"
+        recruitment_funnel = go.Figure(
+            go.Funnel(
+                y = df_recruitment_funnel.index,
+                x = df_recruitment_funnel['Recruitment_Stages'],  
+                textposition = "inside",
+                textinfo = "percent initial"
             )    
-            )
+        )
         recruitment_funnel.update_layout(
-                title= "Recruitment Funnel",
-                showlegend=False,
-                yaxis_title=None,
-            )
+            showlegend=False,
+            yaxis_title=None,
+        )
         st.plotly_chart(recruitment_funnel, use_container_width=True)
     except:
-        st.subheader('Recruitment Funnel')
         st.write('⚠️ Create Recruitment_Stages column to get this chart')
 
 #Stages Pipeline Pie
 with col2:
+    st.subheader('Recruitment Stages Pipeline')
     try:
         df_stages_pipeline = pd.DataFrame(
             df_selection[['Application_Date',
@@ -258,19 +292,21 @@ with col2:
         df_stages_pipeline = df_stages_pipeline / np.timedelta64(1, 'D')
         df_stages_pipeline = df_stages_pipeline.round()
         
-        stages_pipeline_pie = go.Figure(data=[go.Pie(
-            labels=['Phone Screen',
-                    'HarverTest',
-                    'Interview',
-                    'Offer',
-                    'Hire',
-                    'Payment'],
-            values=df_stages_pipeline,
-            hole = 0.5)
-            ]
+        stages_pipeline_pie = go.Figure(
+            data=[
+                go.Pie(
+                    labels=['Phone Screen',
+                            'HarverTest',
+                            'Interview',
+                            'Offer',
+                            'Hire',
+                            'Payment'],
+                    values=df_stages_pipeline,
+                    hole = 0.5
+                    )
+                ]
             )
         stages_pipeline_pie.update_layout(
-            title= "Recruitment Stages Pipeline",
             legend=dict(
                 yanchor="bottom",
                 y=0.01,
@@ -287,18 +323,20 @@ with col2:
         )                        
         st.plotly_chart(stages_pipeline_pie, use_container_width=True)
     except:
-        st.subheader('Recruitment Stages Pipeline')
         st.write('⚠️ Create Recruitment_Stages date columns to get this chart')                                                    
 #Source Pie
 with col3:
+    st.subheader('Source')
     try:
-        source_pie = go.Figure(data=[go.Pie(labels=df_selection['Source'].unique(),
-                                values=df_selection['Source'].value_counts(),
-                                )
-                        ]
-                    )
+        source_pie = go.Figure(
+            data=[
+                go.Pie(
+                    labels=df_selection['Source'].unique(),
+                    values=df_selection['Source'].value_counts(),
+                )
+            ]
+        )
         source_pie.update_layout(
-            title= "Source",
             legend=dict(
                 yanchor="bottom",
                 y=0.01,
@@ -311,12 +349,12 @@ with col3:
         )                        
         st.plotly_chart(source_pie, use_container_width=True)
     except:
-        st.subheader('Source')
         st.write('⚠️ Create Source column to get this chart')               
 
 col4, col5 = st.columns([2, 1])
 #Sources Performance
 with col4:
+    st.subheader('Source Performance')
     try:
         df_source = pd.DataFrame(
             df_selection[['Source','Recruitment_Stages']]
@@ -345,7 +383,6 @@ with col4:
         df_source_performance.reset_index(drop=True, inplace=True)
         df_source_performance.rename(columns={"index": "Source"}, inplace=True)
 
-        st.subheader('Source Performance')
         df_source_performance = st.dataframe(
             df_source_performance,
             column_config={
@@ -375,11 +412,11 @@ with col4:
             use_container_width=True
         )
     except:
-        st.subheader('Source Performance')
         st.write('⚠️ Create Source and Recruitment_Stages column to get this table') 
 
 #Decline Reasons
 with col5:
+    st.subheader('Decline Reasons')
     try:
         df_decline_reasons = pd.DataFrame(
             df_selection[['Status','Decline_Reasons']]
@@ -392,7 +429,6 @@ with col5:
         )
         df_applications['% Of Applications'] = (df_applications['# Of Applications']/df_applications['# Of Applications'].sum())*100
 
-        st.subheader('Decline Reasons')
         df_decline_reasons = st.dataframe(
             df_applications,
             column_config={
@@ -408,5 +444,4 @@ with col5:
             use_container_width=True
         )
     except:
-        st.subheader('Decline Reasons')
         st.write('⚠️ Create Status and Decline_Reasons column to get this table') 
