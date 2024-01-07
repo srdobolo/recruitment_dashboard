@@ -6,7 +6,7 @@ import datetime
 import os
 
 #Streamlit Config
-st.set_page_config(page_title='Data View',
+st.set_page_config(page_title='Dashboard',
                    page_icon=':bar_chart:',
                    layout='wide',
                    initial_sidebar_state="collapsed"
