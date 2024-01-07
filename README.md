@@ -5,7 +5,7 @@ https://recruitmentdashboard.streamlit.app
 A dynamic dashboard that shows recruitment key performance indicators
 
 ## 🚧 Under Development 🚧
-[] Add Candidate Form
+[] Add Candidate Form (st.session_state)
 
 [] Modification_Date Column
 
