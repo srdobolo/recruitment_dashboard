@@ -48,6 +48,7 @@ pyarrow==12.0.1
 pydeck==0.8.1b0
 Pygments==2.17.2
 Pympler==1.0.1
+pywin32==306
 pyrsistent==0.19.3
 python-dateutil==2.8.2
 pytz==2023.3.post1
