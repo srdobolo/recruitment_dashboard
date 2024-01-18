@@ -1,4 +1,4 @@
-![RUN APP](https://link-url-here.org](https://recruitmentdashboard.streamlit.app)
+[RUN APP](https://recruitmentdashboard.streamlit.app)
 
 # Recruitment Dashboard
 ![Home](img/Dashboard.png)
