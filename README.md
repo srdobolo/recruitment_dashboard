@@ -1,5 +1,4 @@
 [RUN APP](https://recruitmentdashboard.streamlit.app)
-[<kbd> <br> RUN APP <br> </kbd>](https://recruitmentdashboard.streamlit.app)
 
 # Recruitment Dashboard
 ![Home](img/Dashboard.png)
