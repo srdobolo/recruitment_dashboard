@@ -23,7 +23,7 @@ if df_data is None:
     st.stop()
 df_data = load_data(df_data)
 
-df_data = pd.read_csv('Candidate_Sample_Set.csv')
+# df_data = pd.read_csv('Candidate_Sample_Set.csv')
 
 #Month Filter
 col1, col2 = st.columns((2))
