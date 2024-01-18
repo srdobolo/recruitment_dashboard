@@ -21,7 +21,7 @@ if df_data is None:
     st.stop()
 df_data = load_data(df_data)
 
-df_data = pd.read_csv('Candidate_Sample_Set.csv')
+# df_data = pd.read_csv('Candidate_Sample_Set.csv')
 
 #Data Cleaning
 df_data = df_data.drop_duplicates()
