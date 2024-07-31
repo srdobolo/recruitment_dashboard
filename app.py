@@ -102,7 +102,7 @@ try:
 except:
     df_selection = df_data
 
-st.sidebar.markdown("Developed by João Miguel Lima - [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
+st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
 #TOP KPI'S
 #Hired
@@ -323,7 +323,7 @@ with col2:
         )                        
         st.plotly_chart(stages_pipeline_pie, use_container_width=True)
     except:
-        st.write('⚠️ Create Date Columns for each Recruitment_Stages to get this chart')                                                    
+        st.write('⚠️ Create Recruitment_Stages date columns to get this chart')                                                    
 #Source Pie
 with col3:
     st.subheader('Source')
@@ -331,7 +331,7 @@ with col3:
         source_pie = go.Figure(
             data=[
                 go.Pie(
-                    labels=df_selection['Source'],
+                    labels=df_selection['Source'].unique(),
                     values=df_selection['Source'].value_counts(),
                 )
             ]
@@ -421,31 +421,6 @@ with col5:
         df_decline_reasons = pd.DataFrame(
             df_selection[['Status','Decline_Reasons']]
         )
-        df_decline_reasons = df_decline_reasons.loc[df_decline_reasons['Status'] == 'Rejected']
-
-        # #Of Applications
-        df_applications = pd.DataFrame(
-            df_decline_reasons['Decline_Reasons'].value_counts().to_frame('# Of Applications')
-        )
-        df_applications['% Of Applications'] = (df_applications['# Of Applications']/df_applications['# Of Applications'].sum())*100
-
-        df_decline_reasons = st.dataframe(
-            df_applications,
-            column_config={
-                "% Of Applications": st.column_config.ProgressColumn(
-                    "% Of Applications",
-                    help="% Of Applications",
-                    format="%.2f", # corrigir simbolo %
-                    min_value=0,
-                    max_value=100,
-                )
-            },
-            hide_index=False,
-            use_container_width=True
-        )
-    except:
-        st.write('⚠️ Create Status and Decline_Reasons column to get this table') 
-        
         df_decline_reasons = df_decline_reasons.loc[df_decline_reasons['Status'] == 'Rejected']
 
         # #Of Applications
