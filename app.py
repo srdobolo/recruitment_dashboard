@@ -445,7 +445,7 @@ with col5:
         )
     except:
         st.write('⚠️ Create Status and Decline_Reasons column to get this table') 
-        )
+        
         df_decline_reasons = df_decline_reasons.loc[df_decline_reasons['Status'] == 'Rejected']
 
         # #Of Applications
