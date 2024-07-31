@@ -23,7 +23,7 @@ if df_data is None:
     st.stop()
 df_data = load_data(df_data)
 
-# df_data = pd.read_csv('Candidate_Sample_Set.csv')
+df_data = pd.read_csv('Candidate_Sample_Set.csv')
 
 #Month Filter
 col1, col2 = st.columns((2))
@@ -102,7 +102,7 @@ try:
 except:
     df_selection = df_data
 
-st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
+st.sidebar.markdown("Developed by João Miguel Lima - [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
 #TOP KPI'S
 #Hired
@@ -165,6 +165,7 @@ with second_column:
             number = {'suffix': " %"},
             mode = "gauge+number", #"gauge+number+delta"
             title = {'text': "Success Rate"},
+            subtitle = {'text': "% Of Effective Placements"},
             delta = {'reference': 0},
             gauge = {'axis': {'range': [ 0, 100 ]}}
         )
@@ -323,7 +324,7 @@ with col2:
         )                        
         st.plotly_chart(stages_pipeline_pie, use_container_width=True)
     except:
-        st.write('⚠️ Create Recruitment_Stages date columns to get this chart')                                                    
+        st.write('⚠️ Create Date Columns for each Recruitment_Stages to get this chart')                                                    
 #Source Pie
 with col3:
     st.subheader('Source')
@@ -331,7 +332,7 @@ with col3:
         source_pie = go.Figure(
             data=[
                 go.Pie(
-                    labels=df_selection['Source'].unique(),
+                    labels=df_selection['Source'],
                     values=df_selection['Source'].value_counts(),
                 )
             ]
