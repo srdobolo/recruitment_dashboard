@@ -169,6 +169,7 @@ df_data = st.data_editor(
         "DoB": st.column_config.DateColumn(       
             "DoB",
             help="select Date Of Birth",
+            required=False,
         ),
         "Gender": st.column_config.SelectboxColumn(
             "Gender",
@@ -302,7 +303,7 @@ df_data = st.data_editor(
 
 #             # df_data = pd.concat([df_data, candidate_data], ignore_index=True)
 
-st.sidebar.markdown("Developed by [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
+st.sidebar.markdown("Developed by João Miguel Lima - [GitHub](https://github.com/srdobolo), [LinkedIn](https://www.linkedin.com/in/joaomiguellima/)")
 
 #Save Button
 
