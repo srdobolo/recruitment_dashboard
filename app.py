@@ -328,16 +328,30 @@ with col2:
 with col3:
     st.subheader('Source')
     try:
-      df_source = pd.DataFrame(
+        df_source = pd.DataFrame(
             df_selection[['Source','Recruitment_Stages']]
         )
-
-            #% Applied
-        df_applied = pd.DataFrame(
-            df_source['Source'].value_counts().to_frame('# Applied')
+        source_pie = go.Figure(
+            data=[
+                go.Pie(
+                    labels=df_source['Source'].unique(),
+                    values=df_source['Source'].value_counts(),
+                )
+            ]
         )
-        df_applied = df_applied.reset_index()
-        df_applied['% Of Applications'] = df_applied['# Applied']/df_applied['# Applied'].sum()*100
+        source_pie.update_layout(
+            legend=dict(
+                yanchor="bottom",
+                y=0.01,
+                xanchor="left",
+                x=0.01,
+            )
+        )
+        source_pie.update_traces(
+            hoverinfo='label+value',
+        )                        
+        st.plotly_chart(source_pie, use_container_width=True)
+   
               
     except:
         st.write('⚠️ Create Source column to get this chart')               
