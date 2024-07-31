@@ -353,7 +353,7 @@ with col4:
 
             #% Applied
         df_applied = pd.DataFrame(
-            df_source['Source'].value_counts().to_frame('# Applied')
+          df_source['Source'].value_counts().to_frame('# Applied')
         )
         df_applied = df_applied.reset_index()
         df_applied['% Of Applications'] = df_applied['# Applied']/df_applied['# Applied'].sum()*100
