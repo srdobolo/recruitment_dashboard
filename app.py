@@ -328,14 +328,11 @@ with col2:
 with col3:
     st.subheader('Source')
     try:
-        df_source = pd.DataFrame(
-            df_selection[['Source','Recruitment_Stages']]
-        )
-        source_pie = go.Figure(
+       source_pie = go.Figure(
             data=[
                 go.Pie(
-                    labels=df_source['Source'],
-                    values=df_source['Source'].value_counts(),
+                    labels=df_selection['Source'].unique(),
+                    values=df_selection['Source'].value_counts(),
                 )
             ]
         )
@@ -351,7 +348,6 @@ with col3:
             hoverinfo='label+value',
         )                        
         st.plotly_chart(source_pie, use_container_width=True)
-   
               
     except:
         st.write('⚠️ Create Source column to get this chart')               
