@@ -165,7 +165,6 @@ with second_column:
             number = {'suffix': " %"},
             mode = "gauge+number", #"gauge+number+delta"
             title = {'text': "Success Rate"},
-            subtitle = {'text': "% Of Effective Placements"},
             delta = {'reference': 0},
             gauge = {'axis': {'range': [ 0, 100 ]}}
         )
