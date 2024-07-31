@@ -328,7 +328,7 @@ with col2:
 with col3:
     st.subheader('Source')
     try:
-       source_pie = go.Figure(
+        source_pie = go.Figure(
             data=[
                 go.Pie(
                     labels=df_selection['Source'].unique(),
@@ -348,9 +348,8 @@ with col3:
             hoverinfo='label+value',
         )                        
         st.plotly_chart(source_pie, use_container_width=True)
-              
     except:
-        st.write('⚠️ Create Source column to get this chart')               
+        st.write('⚠️ Create Source column to get this chart')                     
 
 col4, col5 = st.columns([2, 1])
 #Sources Performance
