@@ -23,7 +23,7 @@ if df_data is None:
     st.stop()
 df_data = load_data(df_data)
 
-df_data = pd.read_csv('Candidate_Sample_Set.csv')
+# df_data = pd.read_csv('Candidate_Sample_Set.csv')
 
 #Month Filter
 col1, col2 = st.columns((2))
@@ -420,6 +420,31 @@ with col5:
     try:
         df_decline_reasons = pd.DataFrame(
             df_selection[['Status','Decline_Reasons']]
+        )
+        df_decline_reasons = df_decline_reasons.loc[df_decline_reasons['Status'] == 'Rejected']
+
+        # #Of Applications
+        df_applications = pd.DataFrame(
+            df_decline_reasons['Decline_Reasons'].value_counts().to_frame('# Of Applications')
+        )
+        df_applications['% Of Applications'] = (df_applications['# Of Applications']/df_applications['# Of Applications'].sum())*100
+
+        df_decline_reasons = st.dataframe(
+            df_applications,
+            column_config={
+                "% Of Applications": st.column_config.ProgressColumn(
+                    "% Of Applications",
+                    help="% Of Applications",
+                    format="%.2f", # corrigir simbolo %
+                    min_value=0,
+                    max_value=100,
+                )
+            },
+            hide_index=False,
+            use_container_width=True
+        )
+    except:
+        st.write('⚠️ Create Status and Decline_Reasons column to get this table') 
         )
         df_decline_reasons = df_decline_reasons.loc[df_decline_reasons['Status'] == 'Rejected']
 
