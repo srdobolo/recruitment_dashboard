@@ -331,7 +331,7 @@ with col3:
         source_pie = go.Figure(
             data=[
                 go.Pie(
-                    labels=df_selection['Source'],
+                    labels=df_selection['Source'].unique(),
                     values=df_selection['Source'].value_counts(),
                 )
             ]
