@@ -11,11 +11,30 @@ st.set_page_config(page_title='Database',
                    initial_sidebar_state="collapsed"
                    )
 
+#统一数据清洗函数（与主页面保持一致）
+def clean_data(df_data):
+    # 去重
+    df_data = df_data.drop_duplicates()
+    
+    # 尝试转换日期列
+    date_columns = ['Application_Date', 'Phone_Screen_Date', 'Harver_Test_Date', 
+                   'Interview_Date', 'Offer_Date', 'Hiring_Date', 'DoB']
+    for col in date_columns:
+        if col in df_data.columns:
+            try:
+                df_data[col] = pd.to_datetime(df_data[col], errors='coerce')
+            except Exception:
+                pass
+    
+    return df_data
+
 #Upload excel File
 @st.cache_data
 def load_data(file):
     df_data = pd.read_csv(file)
+    df_data = clean_data(df_data)  # 使用统一的清洗逻辑
     return df_data
+
 df_data = st.file_uploader('')
 if df_data is None:
     st.stop()
@@ -23,8 +42,8 @@ df_data = load_data(df_data)
 
 # df_data = pd.read_csv('Candidate_Sample_Set.csv')
 
-#Data Cleaning
-df_data = df_data.drop_duplicates()
+#Data Cleaning - 现在由统一的clean_data函数处理，这里保持原有逻辑但不再重复
+# df_data = df_data.drop_duplicates()
 
 # Data Editing
 from typing import Any, Dict
@@ -52,6 +71,7 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
     df_data = df_data.copy()
 
     # Try to convert datetimes into standard format (datetime, no timezone)
+    # 注意：统一的clean_data函数已经处理了日期转换，这里保留原有逻辑作为双重保障
     for col in df_data.columns:
         if is_object_dtype(df_data[col]):
             try:
@@ -134,6 +154,7 @@ def dataframe_explorer(df_data: pd.DataFrame, case: bool = False) -> pd.DataFram
         df_data = df_data[select_column]
     return df_data
    
+
 
 #Dataframe
 df_data = dataframe_explorer(df_data)
@@ -344,3 +365,4 @@ download1 = st.download_button(
 #         file_name='st.Recuitment Dashboard.csv.xlsx',
 #         mime='application/vnd.ms-excel'
 #     )
+
