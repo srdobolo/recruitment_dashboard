@@ -4,6 +4,13 @@ import streamlit as st
 import plotly.graph_objects as go
 import datetime
 import os
+import sys
+
+# 添加项目根目录到路径，以便导入 utils 模块
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# 从共享模块导入统一的数据清洗函数
+from utils.data_cleaner import clean_data
 
 #Streamlit Config
 st.set_page_config(page_title='Dashboard',
@@ -12,23 +19,6 @@ st.set_page_config(page_title='Dashboard',
                    initial_sidebar_state="collapsed"
                    ) 
 st.header(":bar_chart: Recruitment Dashboard")
-
-#统一数据清洗函数
-def clean_data(df_data):
-    # 去重
-    df_data = df_data.drop_duplicates()
-    
-    # 尝试转换日期列
-    date_columns = ['Application_Date', 'Phone_Screen_Date', 'Harver_Test_Date', 
-                   'Interview_Date', 'Offer_Date', 'Hiring_Date', 'DoB']
-    for col in date_columns:
-        if col in df_data.columns:
-            try:
-                df_data[col] = pd.to_datetime(df_data[col], errors='coerce')
-            except Exception:
-                pass
-    
-    return df_data
 
 #Upload excel File
 @st.cache_data

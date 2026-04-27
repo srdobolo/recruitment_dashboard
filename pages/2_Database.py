@@ -3,6 +3,16 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 import os
+import sys
+
+# 添加项目根目录到路径，以便导入 utils 模块
+# 由于此文件在 pages/ 子目录中，需要向上一级找到项目根目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+# 从共享模块导入统一的数据清洗函数
+from utils.data_cleaner import clean_data
 
 #Streamlit Config
 st.set_page_config(page_title='Database',
@@ -10,23 +20,6 @@ st.set_page_config(page_title='Database',
                    layout='wide',
                    initial_sidebar_state="collapsed"
                    )
-
-#统一数据清洗函数（与主页面保持一致）
-def clean_data(df_data):
-    # 去重
-    df_data = df_data.drop_duplicates()
-    
-    # 尝试转换日期列
-    date_columns = ['Application_Date', 'Phone_Screen_Date', 'Harver_Test_Date', 
-                   'Interview_Date', 'Offer_Date', 'Hiring_Date', 'DoB']
-    for col in date_columns:
-        if col in df_data.columns:
-            try:
-                df_data[col] = pd.to_datetime(df_data[col], errors='coerce')
-            except Exception:
-                pass
-    
-    return df_data
 
 #Upload excel File
 @st.cache_data
